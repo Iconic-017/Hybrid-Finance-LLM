@@ -1,0 +1,44 @@
+services:
+
+  client:
+    build: ./client
+    ports:
+      - "5173:5173"
+    depends_on:
+      - gateway
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    environment:
+      - MODEL_SERVER_URL=http://model-server:8001/generate
+      - RETRIEVER_URL=http://retriever:8002/retrieve
+      - OLLAMA_URL=http://ollama:11434/api/generate
+    depends_on:
+      - model-server
+      - retriever
+      - ollama
+
+  model-server:
+    build: ./model-server
+    ports:
+      - "8001:8001"
+
+  retriever:
+    build: ./retriever
+    ports:
+      - "8002:8002"
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    command: serve
+
+volumes:
+  ollama-data:
