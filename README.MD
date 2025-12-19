@@ -281,5 +281,5 @@ docker compose logs -f model-server
 
 ## 📄 License
 
-Add a license before public release (MIT recommended).
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
 
